@@ -31,7 +31,9 @@ router.post('/saveuser', async function(req, res, next) {
   }
   try {
     data = await users.saveUser(newUser);
-    res.redirect('/')
+    res.redirect('/userlist?success=true'); // Redirect to userlist page with success parameter
+    console.log("sucess pass")
+    // res.redirect('/')
   }catch (err){
     console.error(`Error inserting user `, err.message);
     next(err);

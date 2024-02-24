@@ -26,10 +26,11 @@ async function getUser(id){
 }
 
 async function saveUser(newUser){
-  const row = await db.query(
-    `INSERT INTO express_crud(studentno,lastname,firstname,year,course) 
-     VALUES ('${newUser.studentno}','${newUser.lastname}','${newUser.firstname}','${newUser.year}','${newUser.course}')`
-  );
+    const row = await db.query(
+      `INSERT INTO express_crud(studentno,lastname,firstname,year,course) 
+      VALUES ('${newUser.studentno}','${newUser.lastname}','${newUser.firstname}','${newUser.year}','${newUser.course}')`
+    );
+    
 }
 
 async function updateUser(newUser){
