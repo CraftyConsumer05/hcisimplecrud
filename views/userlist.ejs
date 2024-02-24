@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* using roboto font */
+            background-color: #219C90   ;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; 
+            align-items: top; 
+            min-height: 100vh;
+        }
+
+        .container {
+            margin-top: 80px;
+            margin-bottom: 80px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            width: 80%;
+
+            display: flex;
+            flex-direction: column; /* vertical stack */
+            animation: enter 0.5s ease-in-out 0s forwards;
+        }
+
+        h1 {
+            color: #219C90;
+            text-align: center;
+        }
+
+        h1 span {
+            color: #D83F31;
+        }
+
+        .total-users {
+            color: #EE9322;
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-top: 0px;
+            margin: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #000000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        td:hover {
+            background-color: #eed5d3ec;
+            color: #EE9322;
+        }
+
+        th {
+            background-color: #EE9322;
+            color: white;
+            text-align: center;
+        }
+        
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #d3e9ff;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .edit-button, .delete-button {
+            display: inline-block;
+            background-color: #219C90;
+            color: #fff;
+            padding: 5px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .delete-button {
+            background-color: #D83F31;
+        }
+
+        .edit-link, .delete-link {
+            text-decoration: none;
+            color: #fff;
+            padding: 1rem;
+            
+        }
+
+        .edit-link:hover, .delete-link:hover {
+            text-decoration: underline;
+            animation: boing 0.5s ease-in-out 0s forwards;  
+        }
+
+        .create-button {
+            display: block;
+            background-color: #D83F31;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            width: 50vw;
+            margin: auto;
+            text-align: center;
+            margin-bottom: 20px;
+            transform: translateY(0px);
+
+        }
+
+        .create-button:hover {
+            background-color: #b300b3;
+            animation: boing 0.5s ease-in-out 0s forwards;
+        }
+
+        @keyframes boing {
+            0% {
+                transform: ranslateY(0px);
+
+            } 
+            100% {
+                transform: translateY(5px);
+            }
+        }
+
+        @keyframes enter {
+            0% {
+                opacity: 0;
+                transform: ranslateY(-50px);
+
+            } 
+            100% {
+                opacity: 1;
+                transform: translateY(10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CITE 012A CLASSLIST</h1>
+        <a href="/insertuser" class="create-button">Create User</a>
+        <div class="total-users">NUMBER OF STUDENTS: <%= userList.length %></div>  
+        <table>
+            <thead>
+                <tr>
+                    <th>ACTIONS</th>
+                    <!-- <th>ID</th> -->
+                    <th>STUDENT NUMBER</th>
+                    <th>FIRST NAME</th>
+                    <th>LAST NAME</th>
+                    <th>YEAR</th>
+                    <th>COURSE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% userList.forEach((user) => { %>
+                    <tr>
+                        <td class="button-container">
+                            <a href="/edituser/<%= user.id %>" class="edit-button edit-link">Edit</a>
+                            <a href="/deleteuser/<%= user.id %>" class="delete-button delete-link">Delete</a>
+                        </td>
+                        <!-- <td><%= user.id %></td> -->
+                        <td><%= user.studentno %></td>
+                        <td><%= user.firstname %></td>
+                        <td><%= user.lastname %></td>
+                        <td><%= user.year %></td>
+                        <td><%= user.course %></td>
+                    </tr>
+                <% }) %>
+
+                <a href="#" id="download-pdf-button" class="create-button">Download PDF</a>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.getElementById('download-pdf-button').addEventListener('click', function() {
+            const doc = new jsPDF();
+            doc.text(20, 20, 'User List');
+    
+            let y = 30; // starting y position for the table
+    
+            // Loop through each row in the table and add it to the PDF
+            document.querySelectorAll('table tr').forEach(function(row) {
+                let x = 20; // starting x position for each cell
+                row.querySelectorAll('td, th').forEach(function(cell) {
+                    doc.text(x, y, cell.innerText);
+                    x += cell.offsetWidth / 2; // adjust x position based on cell width
+                });
+                y += 10; // move to the next row
+            });
+    
+            doc.save('user-list.pdf');
+        });
+    </script>
+    
+</body>
+</html>
+
+
+
+
