@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User List</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" id="jspdf-script"></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif; /* using roboto font */
@@ -162,7 +162,6 @@
             <thead>
                 <tr>
                     <th>ACTIONS</th>
-                    <!-- <th>ID</th> -->
                     <th>STUDENT NUMBER</th>
                     <th>FIRST NAME</th>
                     <th>LAST NAME</th>
@@ -192,13 +191,12 @@
     </div>
     <script>
         document.getElementById('download-pdf-button').addEventListener('click', function() {
+            const userList = document.querySelectorAll('table tr'); // Select all rows in the table
             const doc = new jsPDF();
-            doc.text(20, 20, 'User List');
-    
-            let y = 30; // starting y position for the table
+            let y = 20; // starting y position for the table
     
             // Loop through each row in the table and add it to the PDF
-            document.querySelectorAll('table tr').forEach(function(row) {
+            userList.forEach(function(row) {
                 let x = 20; // starting x position for each cell
                 row.querySelectorAll('td, th').forEach(function(cell) {
                     doc.text(x, y, cell.innerText);
@@ -210,6 +208,8 @@
             doc.save('user-list.pdf');
         });
     </script>
+    
+    
     
 </body>
 </html>
